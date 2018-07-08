@@ -5,6 +5,10 @@ Stock::Stock(string company, double _price, int _amount, int _acquired, double _
 	startingPrice = _startingPrice;
 }
 
+double Stock::calculatePrice() {
+	return 0.02 * startingPrice;
+}
+
 //Sets a new value to startingPrice
 void Stock::setStartingPrice(double newStartingPrice) {
 	startingPrice = newStartingPrice;

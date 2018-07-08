@@ -7,6 +7,7 @@ class Stock :
 	public Security {
 public:
 	Stock(string, double, int, int, double);
+	double calculatePrice();
 	void setStartingPrice(double newStartingPrice); //Sets a new value to startingPrice
 	double getStartingPrice() const;                //Gets the new value for startingPrice
 private:

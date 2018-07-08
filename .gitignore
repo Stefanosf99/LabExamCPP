@@ -39,6 +39,7 @@
 *.pdb
 *.idb
 *.db
+*.opendb
 
 #Stuff I don't know what they are
 *.ipch

@@ -6,6 +6,10 @@ Bond::Bond(string company, double _price, int _amount, int _acquired, string _de
 	intRate = _intRate;
 }
 
+double Bond::calculatePrice() {
+	return 0.03 * price + 0.01 * (stoi(deadline)) + 0.01 * intRate;
+}
+
 //Sets a new value to intRate
 void Bond::setIntRate(int newIntRate) {
 	intRate = newIntRate;

@@ -7,6 +7,7 @@ class Bond :
 	public Security {
 public:
 	Bond(string, double, int, int, string, int);
+	double calculatePrice();
 	//Sets a new value to intRate
 	void setIntRate(int newIntRate);
 	//Gets the new value for startingPrice
