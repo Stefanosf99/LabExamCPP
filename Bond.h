@@ -7,17 +7,12 @@ class Bond :
 	public Security {
 public:
 	Bond(string, double, int, int, string, int);
-	double calculatePrice();
-	//Sets a new value to intRate
-	void setIntRate(int newIntRate);
-	//Gets the new value for startingPrice
-	int getIntRate() const;
-	//Sets a new value to deadline
-	void setDeadline(string newDeadline);
-	//Gets the new value for deadline
-	string getDeadline() const;
+	double calculatePrice();			  //Bond price calculation
+	void setIntRate(int newIntRate);	  //Sets a new value to intRate
+	int getIntRate() const;				  //Gets the value for startingPrice
+	void setDeadline(string newDeadline); //Sets a new value to deadline
+	string getDeadline() const;			  //Gets the new value for deadline
 private:
 	string deadline;
 	int intRate;
 };
-

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 #include "Security.h"
 #include "Stock.h"
 #include "Bond.h"
@@ -20,44 +21,27 @@ private:
 	double maxWorth;
 public:
 	Portfolio(string, string, string, string);
-	//Adds bonds and stocks
-	void addSecurity(string, double, int, int, string, int);
-	void addSecurity(string, double, int, int, double);
-	void addSecurity(fstream*);
-	// Marks a portfolio as deleted
-	void markDeleted();
-	// Menu and caller for portfolio data updates
-	void update();
-	// Calculates the total price of the portfolio
-	double countMaxWorth();
-	//Sets a new value to totalWorth
-	void setTotalWorth(double newTotal);
-	//Gets the new value for totalWorth
-	double getTotalWorth() const;
-	//Sets a new value to maxWorth
-	void setMaxWorth(double newMax);
-	//Gets the new value for maxWorth
-	double getMaxWorth() const;
-	//Sets a new value to fullName
-	void setFullName(string newName);
-	//Gets the new value for fullName
-	string getFullName() const;
-	//Sets a new value to address
-	void setAddress(string newAddress);
-	//Gets the new value for address
-	string getAddress() const;
-	//Sets a new value to phone
-	void setPhone(string newPhone);
-	//Gets the new value for phone
-	string getPhone() const;
-	//Sets a new value to AFM
-	void setAFM(string newAFM);
-	//Gets the new value for AFM
-	string getAFM() const;
+	void addSecurity(string, double, int, int, string, int); //Adds Bond
+	void addSecurity(string, double, int, int, double);		 //Adds Stock
+	void addSecurity(fstream*);								 //Adds Securities from file
+	void markDeleted();										 //Marks a portfolio as deleted
+	void update();											 //Menu and caller for portfolio data updates
+	double countTotalWorth();								 //Calculates the total price of the portfolio
+	double countMaxWorth();									 //Gets the highest price of a single security
+	void setTotalWorth(double newTotal);					 //Sets a new value to totalWorth
+	double getTotalWorth() const;							 //Gets the new value for totalWorth
+	void setMaxWorth(double newMax);						 //Sets a new value to maxWorth
+	double getMaxWorth() const;								 //Gets the new value for maxWorth
+	void setFullName(string newName);						 //Sets a new value to fullName
+	string getFullName() const;								 //Gets the new value for fullName
+	void setAddress(string newAddress);						 //Sets a new value to address
+	string getAddress() const;								 //Gets the new value for address
+	void setPhone(string newPhone);							 //Sets a new value to phone
+	string getPhone() const;								 //Gets the new value for phone
+	void setAFM(string newAFM);								 //Sets a new value to AFM
+	string getAFM() const;									 //Gets the new value for AFM
 private:
-	// Edits portfolio user info for update()
-	void editInfo();
-	// Edits portfolio securities for update()
-	void editSecurities();
+	void editInfo();										 //Edits portfolio user info for update()
+	void editSecurities();									 // Edits portfolio securities for update()
 };
 

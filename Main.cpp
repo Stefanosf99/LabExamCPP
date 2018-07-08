@@ -6,8 +6,32 @@
 #include "Bond.h"
 #include "Stock.h"
 
-using namespace std; 
+using namespace std;
 
+void header();
+void header(string);
+
+void customSort(vector<Portfolio*>&);
+void printTenMostExpensive(vector<Portfolio*>&);
+void showMoreThanXPrice(vector<Portfolio*>&, double);
+void showSingleMoreThanXPrice(vector<Portfolio*>&, double);
+
+Portfolio* addSecurities(Portfolio*);
+Portfolio* createPortfolio();
+void statisticMenu(vector<Portfolio*>&);
+void menu(vector<Portfolio*>&);
+
+int main(int argc, char** argv) {
+	vector<Portfolio*> portfolios;
+	menu(portfolios);
+
+	cout << portfolios[0]->getFullName();
+
+	system("PAUSE > NUL");
+	return 0;
+}
+
+#pragma region "headers"
 void header() {
 	cout << "---------------------------------------------" << endl << endl;
 	cout << "--Object-Oriented Programming, Final Project" << endl;
@@ -25,7 +49,54 @@ void header(string headName) {
 	cout << "---------------------------------------------" << endl << endl;
 	cout << "-" << headName << endl << endl;
 }
+#pragma endregion
 
+#pragma region "Statistics"
+void customSort(vector<Portfolio*>& portfolios) {
+	sort(portfolios.begin(), portfolios.end(), [](Portfolio* left, Portfolio* right) {
+		return left->countTotalWorth() < right->countTotalWorth();
+	});
+}
+void printTenMostExpensive(vector<Portfolio*>& portfolios) {
+	int portfoliosToShow;
+
+	if (portfolios.size() >= 10) portfoliosToShow = 10;
+	else portfoliosToShow = portfolios.size();
+
+	customSort(portfolios);
+	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
+
+	for (int i = 0; i < portfoliosToShow; i++) {
+		cout << i << ". " << portfolios[i]->getFullName() << endl << " (" << portfolios[i]->countTotalWorth() << "$)";
+	}
+
+	system("pause");
+}
+void showMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
+	int sum = 0;
+	header("Portfolios with higher than " + to_string(price) + "$ cost");
+	for (int i = 0; i < portfolios.size(); i++) {
+		if (portfolios[i]->countTotalWorth() > price) {
+			sum++;
+		}
+	}
+	cout << "Portfolios with cost higher than " << price << "$ : " << sum << endl << endl;
+	system("pause");
+}
+void showSingleMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
+	int sum = 0;
+	header("Portfolios with a single security with higher cost than " + to_string(price) + "$");
+	for (int i = 0; i < portfolios.size(); i++) {
+		if (portfolios[i]->countMaxWorth() > price) {
+			sum++;
+		}
+	}
+	cout << "Portfolios with a single security with higher cost than " << price << "$ : " << sum << endl << endl;
+	system("pause");
+}
+#pragma endregion
+
+#pragma region "Menus"
 Portfolio* addSecurities(Portfolio* portfolio) {
 	int choice = 0;
 	do {
@@ -72,22 +143,22 @@ Portfolio* addSecurities(Portfolio* portfolio) {
 
 		switch (choice) {
 		case 1: {
-				string deadline;
-				int intRate;
-				cout << "Bond deadline: ";
-				getline(cin, deadline);
-				cout << "Interest rate: ";
-				cin >> intRate;
-				portfolio->addSecurity(company, price, amount, acquired, deadline, intRate);
-				break;
-			}
+			string deadline;
+			int intRate;
+			cout << "Bond deadline: ";
+			getline(cin, deadline);
+			cout << "Interest rate: ";
+			cin >> intRate;
+			portfolio->addSecurity(company, price, amount, acquired, deadline, intRate);
+			break;
+		}
 		case 2: {
-				double startingPrice;
-				cout << "Stock starting price: ";
-				cin >> startingPrice;
-				portfolio->addSecurity(company, price, amount, acquired, startingPrice);
-				break;
-			}
+			double startingPrice;
+			cout << "Stock starting price: ";
+			cin >> startingPrice;
+			portfolio->addSecurity(company, price, amount, acquired, startingPrice);
+			break;
+		}
 		}
 	} while (choice < 4 && choice > 0);
 
@@ -113,6 +184,46 @@ Portfolio* createPortfolio() {
 	return addSecurities(new Portfolio(name, address, phone, AFM));
 }
 
+void statisticMenu(vector<Portfolio*> &portfolios) {
+	int choice;
+	do {
+		system("cls");
+		header("Portfolio Statistics");
+		cout << "Choose your desired statistic: " << endl << endl;
+		cout << "1. Show portfolios with more than X cost" << endl;
+		cout << "2. Show portfolios that own a single Security with more than X cost" << endl;
+		cout << "3. Show top 10 most expensive portfolios" << endl;
+		cout << "Any other button to cancel" << endl << endl;
+		cout << "Action: ";
+
+		cin >> choice;
+		system("cls");
+		switch (choice) {
+		case 1: {
+			double price;
+			do {
+				cout << "Input minimum portfolio cost: ";
+				cin >> price;
+			} while (price < 0);
+			showMoreThanXPrice(portfolios, price);
+			break;
+		}
+		case 2: {
+			double price;
+			do {
+				cout << "Input minimum security cost: ";
+				cin >> price;
+			} while (price < 0);
+			showSingleMoreThanXPrice(portfolios, price);
+			break;
+		}
+		case 3:
+			printTenMostExpensive(portfolios);
+			break;
+		}
+	} while (choice < 4 && choice > 0);
+}
+
 void menu(vector<Portfolio*> &portfolios) { //The basic menu. Calls all other functions and its used by main.
 	int choice;
 	do {
@@ -133,17 +244,9 @@ void menu(vector<Portfolio*> &portfolios) { //The basic menu. Calls all other fu
 			break;
 		case 2:
 		case 3:
+			statisticMenu(portfolios);
 			break;
 		}
 	} while (choice < 4 && choice > 0);
 }
-
-int main(int argc, char** argv) {
-	vector<Portfolio*> portfolios;
-	menu(portfolios);
-
-	cout << portfolios[0]->getFullName();
-
-	system("PAUSE > NUL");
-	return 0;
-}
+#pragma endregion

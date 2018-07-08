@@ -44,10 +44,21 @@ void Portfolio::editSecurities() {
 	// TODO: Add your implementation code here.
 }
 
-// Calculates the total price of the portfolio
+// Gets the highest price of a single security
 double Portfolio::countMaxWorth() {
-	// TODO: Add your implementation code here.
-	return 0.0;
+	Security* maxSecurity = securities[max_element(securities.begin(), securities.begin(),
+		[](Security* left, Security* right) {return left->calculatePrice() < right->calculatePrice(); }) - securities.begin()];
+	return maxSecurity->calculatePrice();
+}
+
+// Calculates the total price of the portfolio
+double Portfolio::countTotalWorth() {
+	double sum = 0;
+	for (int i = 0; i < securities.size(); i++) {
+		sum += securities[i]->calculatePrice();
+	}
+
+	return sum;
 }
 
 #pragma region "Getters/Setters"
