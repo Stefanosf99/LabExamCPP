@@ -24,10 +24,6 @@ void menu(vector<Portfolio*>&);
 int main(int argc, char** argv) {
 	vector<Portfolio*> portfolios;
 	menu(portfolios);
-
-	cout << portfolios[0]->getFullName();
-
-	system("PAUSE > NUL");
 	return 0;
 }
 
@@ -67,7 +63,7 @@ void printTenMostExpensive(vector<Portfolio*>& portfolios) {
 	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
 
 	for (int i = 0; i < portfoliosToShow; i++) {
-		cout << i << ". " << portfolios[i]->getFullName() << endl << " (" << portfolios[i]->countTotalWorth() << "$)";
+		cout << i << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)";
 	}
 
 	system("pause");
