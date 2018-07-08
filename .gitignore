@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+*.vcxproj
 
 # Compiled Object files
 *.slo
@@ -44,3 +45,5 @@
 #Stuff I don't know what they are
 *.ipch
 *.ilk
+.vs/LabExam/v15/.suo
+.vs/LabExam/v15/.suo

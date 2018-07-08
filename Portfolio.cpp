@@ -31,7 +31,10 @@ void Portfolio::addSecurity(fstream* file) {
 
 // Edits portfolio user info for update()
 void Portfolio::editInfo() {
-	// TODO: Add your implementation code here.
+	getFullName();
+	getAddress();
+	getPhone();
+	getAFM();
 }
 
 // Menu and caller for portfolio data updates

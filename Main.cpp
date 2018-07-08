@@ -18,6 +18,7 @@ void showSingleMoreThanXPrice(vector<Portfolio*>&, double);
 
 Portfolio* addSecurities(Portfolio*);
 Portfolio* createPortfolio();
+Portfolio* editMenu(Portfolio*);
 void statisticMenu(vector<Portfolio*>&);
 void menu(vector<Portfolio*>&);
 
@@ -63,7 +64,7 @@ void printTenMostExpensive(vector<Portfolio*>& portfolios) {
 	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
 
 	for (int i = 0; i < portfoliosToShow; i++) {
-		cout << i << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)";
+		cout << i+1 << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)\n";
 	}
 
 	system("pause");
@@ -180,6 +181,67 @@ Portfolio* createPortfolio() {
 	return addSecurities(new Portfolio(name, address, phone, AFM));
 }
 
+Portfolio* editMenu(Portfolio* portfolio) {
+	int choice;
+	do {
+		header("Edit A Portfolio");
+
+		cout << "Choose your prefered option:" << endl;
+		cout << "1. Edit a portfolio" << endl;
+		cout << "2. Delete a portfolio" << endl;
+		cout << "Any other number for cancellation" << endl << endl;
+		cin >> choice;
+
+		cin.clear();
+		cin.ignore();
+		system("cls");
+		switch (choice) {
+		case 1:
+			int choice;
+			header("Edit A Portfolio");
+
+			cout << "Choose your prefered option:" << endl;
+			cout << "1. Edit client information" << endl;
+			cout << "2. Add an extra security" << endl;
+			cout << "Any other number for cancellation" << endl << endl;
+			cin >> choice;
+			system("cls");
+
+			switch (choice) {
+			case 1: {
+				string name, address, phone, AFM;
+				string newName, newAddress, newPhone, newAFM;
+				header("Edit client information");
+
+				cout << "New customer name: ";
+				cin >> newName;
+				portfolio->setFullName(newName);
+				cout << "New address of residence: ";
+				cin >> newAddress;
+				portfolio->setAddress(newAddress);
+				cout << "New phone number: ";
+				cin >> newPhone;
+				portfolio->setPhone(newPhone);
+				cout << "New tax registration number: ";
+				cin >> newAFM;
+				portfolio->setAFM(newAFM);
+				break;
+			}
+			case 2: {
+				//case of add extra security
+				break;
+			}
+			
+				
+			}
+			break;
+		case 2:
+			//case of delete
+			break;
+		}
+	} while (choice < 3 && choice > 0);
+}
+
 void statisticMenu(vector<Portfolio*> &portfolios) {
 	int choice;
 	do {
@@ -239,6 +301,8 @@ void menu(vector<Portfolio*> &portfolios) { //The basic menu. Calls all other fu
 			portfolios.push_back(createPortfolio());
 			break;
 		case 2:
+			editMenu();
+			break;
 		case 3:
 			statisticMenu(portfolios);
 			break;
