@@ -64,7 +64,7 @@ void printTenMostExpensive(vector<Portfolio*>& portfolios) {
 	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
 
 	for (int i = 0; i < portfoliosToShow; i++) {
-		cout << i+1 << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)\n";
+		cout << i+1 << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)" << endl;
 	}
 
 	system("pause");
@@ -209,10 +209,18 @@ Portfolio* editMenu(Portfolio* portfolio) {
 
 			switch (choice) {
 			case 1: {
+				int selection, portfoliosToShow;
 				string name, address, phone, AFM;
 				string newName, newAddress, newPhone, newAFM;
 				header("Edit client information");
+				cout << "Select the number of the portfolio you want to edit" << endl;
 
+				if (portfolios.size() >= 10) portfoliosToShow = 10;
+				else portfoliosToShow = portfolios.size();
+
+				for (int i = 0; i < portfolios.size(); i++) {
+					cout << i + 1 << ". " << portfolios[i] ->getFullName() << endl;
+				}
 				cout << "New customer name: ";
 				cin >> newName;
 				portfolio->setFullName(newName);
