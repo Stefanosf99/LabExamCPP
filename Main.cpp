@@ -11,6 +11,7 @@ using namespace std;
 void header();
 void header(string);
 
+int getNonDeletedPortfolioCount(vector<Portfolio*>&);
 void customSort(vector<Portfolio*>&);
 void printTenMostExpensive(vector<Portfolio*>&);
 void showMoreThanXPrice(vector<Portfolio*>&, double);
@@ -49,19 +50,29 @@ void header(string headName) {
 #pragma endregion
 
 #pragma region "Statistics"
+int getNonDeletedPortfolioCount(vector<Portfolio*>& portfolios) {
+	int sum = 0;
+	for (int i = 0; i < portfolios.size(); i++) {
+		if (portfolios[i]->isValid()) sum++;
+	}
+	cout << sum;
+	return sum;
+}
 void customSort(vector<Portfolio*>& portfolios) {
 	sort(portfolios.begin(), portfolios.end(), [](Portfolio* left, Portfolio* right) {
+		if (!right->isValid()) return false;
 		return left->countTotalWorth() < right->countTotalWorth();
 	});
 }
 void printTenMostExpensive(vector<Portfolio*>& portfolios) {
 	int portfoliosToShow;
 
-	if (portfolios.size() >= 10) portfoliosToShow = 10;
-	else portfoliosToShow = portfolios.size();
+	if (getNonDeletedPortfolioCount(portfolios) >= 10) portfoliosToShow = 10;
+	else portfoliosToShow = getNonDeletedPortfolioCount(portfolios);
+
+	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
 
 	customSort(portfolios);
-	header("Top " + to_string(portfoliosToShow) + " most expensive Portfolios");
 
 	for (int i = 0; i < portfoliosToShow; i++) {
 		cout << i+1 << ". " << portfolios[i]->getFullName() << " (" << portfolios[i]->countTotalWorth() << "$)" << endl;
@@ -72,7 +83,10 @@ void printTenMostExpensive(vector<Portfolio*>& portfolios) {
 void showMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
 	int sum = 0;
 	header("Portfolios with higher than " + to_string(price) + "$ cost");
-	for (int i = 0; i < portfolios.size(); i++) {
+
+	customSort(portfolios);
+
+	for (int i = 0; i < getNonDeletedPortfolioCount(portfolios); i++) {
 		if (portfolios[i]->countTotalWorth() > price) {
 			sum++;
 		}
@@ -83,7 +97,10 @@ void showMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
 void showSingleMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
 	int sum = 0;
 	header("Portfolios with a single security with higher cost than " + to_string(price) + "$");
-	for (int i = 0; i < portfolios.size(); i++) {
+
+	customSort(portfolios);
+
+	for (int i = 0; i < getNonDeletedPortfolioCount(portfolios); i++) {
 		if (portfolios[i]->countMaxWorth() > price) {
 			sum++;
 		}
@@ -181,8 +198,9 @@ Portfolio* createPortfolio() {
 	return addSecurities(new Portfolio(name, address, phone, AFM));
 }
 
-Portfolio* editMenu(Portfolio* portfolio) {
-	int choice;
+void editMenu(vector<Portfolio*>& portfolios) {
+	int choice, selection;
+	Portfolio* portfolio;
 	do {
 		header("Edit A Portfolio");
 
@@ -195,57 +213,62 @@ Portfolio* editMenu(Portfolio* portfolio) {
 		cin.clear();
 		cin.ignore();
 		system("cls");
-		switch (choice) {
-		case 1:
-			int choice;
-			header("Edit A Portfolio");
 
-			cout << "Choose your prefered option:" << endl;
-			cout << "1. Edit client information" << endl;
-			cout << "2. Add an extra security" << endl;
-			cout << "Any other number for cancellation" << endl << endl;
-			cin >> choice;
-			system("cls");
-
-			switch (choice) {
-			case 1: {
-				int selection, portfoliosToShow;
-				string name, address, phone, AFM;
-				string newName, newAddress, newPhone, newAFM;
-				header("Edit client information");
-				cout << "Select the number of the portfolio you want to edit" << endl;
-
-				if (portfolios.size() >= 10) portfoliosToShow = 10;
-				else portfoliosToShow = portfolios.size();
+		if (choice == 1 || choice == 2) {
+			do {
+				cout << "Select the number of the portfolio you want to edit:" << endl;
 
 				for (int i = 0; i < portfolios.size(); i++) {
-					cout << i + 1 << ". " << portfolios[i] ->getFullName() << endl;
+					cout << i + 1 << ". " << portfolios[i]->getFullName() << endl;
 				}
-				cout << "New customer name: ";
-				cin >> newName;
-				portfolio->setFullName(newName);
-				cout << "New address of residence: ";
-				cin >> newAddress;
-				portfolio->setAddress(newAddress);
-				cout << "New phone number: ";
-				cin >> newPhone;
-				portfolio->setPhone(newPhone);
-				cout << "New tax registration number: ";
-				cin >> newAFM;
-				portfolio->setAFM(newAFM);
+
+				cout << "Portfolio number: ";
+				cin >> selection;
+			} while (selection < 1 || selection > portfolios.size());
+
+			portfolio = portfolios[selection - 1];
+
+			switch (choice) {
+			case 1:
+				int choice;
+				header("Edit A Portfolio");
+
+				cout << "Choose your prefered option:" << endl;
+				cout << "1. Edit client information" << endl;
+				cout << "2. Add an extra security" << endl;
+				cout << "Any other number for cancellation" << endl << endl;
+				cin >> choice;
+				system("cls");
+
+				switch (choice) {
+				case 1: {
+					int selection, portfoliosToShow;
+					string newName, newAddress, newPhone, newAFM;
+					header("Edit client '" + portfolio->getFullName() + "' information");
+
+					cout << "New customer name: ";
+					getline(cin, newName);
+					portfolio->setFullName(newName);
+					cout << "New address of residence: ";
+					getline(cin, newAddress);
+					portfolio->setAddress(newAddress);
+					cout << "New phone number: ";
+					cin >> newPhone;
+					portfolio->setPhone(newPhone);
+					cout << "New tax registration number: ";
+					cin >> newAFM;
+					portfolio->setAFM(newAFM);
+					break;
+				}
+				case 2: {
+					//case of add extra security
+					break;
+				}
+				}
+			case 2:
+				portfolio->markDeleted();
 				break;
 			}
-			case 2: {
-				//case of add extra security
-				break;
-			}
-			
-				
-			}
-			break;
-		case 2:
-			//case of delete
-			break;
 		}
 	} while (choice < 3 && choice > 0);
 }
@@ -309,7 +332,7 @@ void menu(vector<Portfolio*> &portfolios) { //The basic menu. Calls all other fu
 			portfolios.push_back(createPortfolio());
 			break;
 		case 2:
-			editMenu();
+			editMenu(portfolios);
 			break;
 		case 3:
 			statisticMenu(portfolios);

@@ -5,13 +5,16 @@ Portfolio::Portfolio(string _fullName, string _address, string _phone, string _A
 	address = _address;
 	phone = _phone;
 	AFM = _AFM;
-	totalWorth = 0.0;
-	maxWorth = 0.0;
+	valid = true;
 }
 
 // Marks a portfolio as deleted
 void Portfolio::markDeleted() {
 	valid = false;
+}
+
+bool Portfolio::isValid() {
+	return valid;
 }
 
 //Adds a single bond
@@ -65,27 +68,6 @@ double Portfolio::countTotalWorth() {
 }
 
 #pragma region "Getters/Setters"
-
-//Sets a new value to totalWorth
-void Portfolio::setTotalWorth(double newTotal) {
-	totalWorth = newTotal;
-}
-
-//Gets the new value for totalWorth
-double Portfolio::getTotalWorth()const {
-	return totalWorth;
-}
-
-//Sets a new value to maxWorth
-void Portfolio::setMaxWorth(double newMax) {
-	maxWorth = newMax;
-}
-
-//Gets the new value for maxWorth
-double Portfolio::getMaxWorth()const {
-	return maxWorth;
-}
-
 //Sets a new value to fullName
 void Portfolio::setFullName(string newName) {
 	fullName = newName;
