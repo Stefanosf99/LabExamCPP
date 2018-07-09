@@ -27,6 +27,16 @@ void Portfolio::addSecurity(string company, double price, int amount, int acquir
 	securities.push_back(new Stock(company, price, amount, acquired, startingPrice));
 }
 
+//Adds an extra bond in an existing portfolio but with the proper header
+void Portfolio::addSecurity(string company, double price, int amount, int acquired, string deadline, int intRate, bool rightHeader) {
+	securities.push_back(new Bond(company, price, amount, acquired, deadline, intRate, rightHeader));
+}
+
+//Adds an extra stock in an existing portfolio but with the proper header
+void Portfolio::addSecurity(string company, double price, int amount, int acquired, double startingPrice, bool rightHeader) {
+	securities.push_back(new Stock(company, price, amount, acquired, startingPrice, rightHeader));
+}
+
 //Adds all securities from a file
 void Portfolio::addSecurity(fstream* file) {
 	//TODO:: ADD CODE
