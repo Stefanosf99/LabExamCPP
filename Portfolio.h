@@ -24,7 +24,6 @@ public:
 	void addSecurity(fstream*);								 //Adds Securities from file
 	void markDeleted();										 //Marks a portfolio as deleted
 	bool isValid();											 //Gets if this portfolio is marked as deleted
-	void update();											 //Menu and caller for portfolio data updates
 	double countTotalWorth();								 //Calculates the total price of the portfolio
 	double countMaxWorth();									 //Gets the highest price of a single security
 	void setFullName(string newName);						 //Sets a new value to fullName
@@ -35,8 +34,5 @@ public:
 	string getPhone() const;								 //Gets the new value for phone
 	void setAFM(string newAFM);								 //Sets a new value to AFM
 	string getAFM() const;									 //Gets the new value for AFM
-private:
-	void editInfo();										 //Edits portfolio user info for update()
-	void editSecurities();									 // Edits portfolio securities for update()
 };
 

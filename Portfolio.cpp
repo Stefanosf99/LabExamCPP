@@ -32,24 +32,6 @@ void Portfolio::addSecurity(fstream* file) {
 	//TODO:: ADD CODE
 }
 
-// Edits portfolio user info for update()
-void Portfolio::editInfo() {
-	getFullName();
-	getAddress();
-	getPhone();
-	getAFM();
-}
-
-// Menu and caller for portfolio data updates
-void Portfolio::update() {
-	// TODO: Add your implementation code here.
-}
-
-// Edits portfolio securities for update()
-void Portfolio::editSecurities() {
-	// TODO: Add your implementation code here.
-}
-
 // Gets the highest price of a single security
 double Portfolio::countMaxWorth() {
 	Security* maxSecurity = securities[max_element(securities.begin(), securities.begin(),
