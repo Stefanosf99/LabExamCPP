@@ -17,7 +17,6 @@ void printTenMostExpensive(vector<Portfolio*>&);
 void showMoreThanXPrice(vector<Portfolio*>&, double);
 void showSingleMoreThanXPrice(vector<Portfolio*>&, double);
 
-Portfolio* addSecurities(Portfolio*);
 Portfolio* addSecurities(Portfolio*, bool);
 Portfolio* createPortfolio();
 Portfolio* editMenu(Portfolio*);
@@ -112,10 +111,11 @@ void showSingleMoreThanXPrice(vector<Portfolio*>& portfolios, double price) {
 #pragma endregion
 
 #pragma region "Menus"
-Portfolio* addSecurities(Portfolio* portfolio) {
+Portfolio* addSecurities(Portfolio* portfolio, bool editing = false) {
 	int choice = 0;
 	do {
-		header("Add a new Portfolio (Add Securities)");
+		if (editing) header("Add an extra security to '" + portfolio->getFullName() + "'s portfolio");
+		else header("Add a new Portfolio (Add Securities)");
 
 		string company;
 		double price;
@@ -138,7 +138,8 @@ Portfolio* addSecurities(Portfolio* portfolio) {
 		switch (choice) {
 		case 1:
 		case 2:
-			header("Add a new Portfolio (Add Securities)");
+			if (editing) header("Add an extra security to '" + portfolio->getFullName() + "'s portfolio");
+			else header("Add a new Portfolio (Add Securities)");
 			cout << "Company: ";
 			getline(cin, company);
 			cout << "Security price: ";
@@ -179,76 +180,6 @@ Portfolio* addSecurities(Portfolio* portfolio) {
 	} while (choice < 4 && choice > 0);
 
 	return portfolio;
-}
-
-Portfolio* addSecurities(Portfolio* portfolio, bool) {
-	int selection = 0;
-	do {
-
-	header("Add an extra security to '" + portfolio->getFullName() + "'s portfolio");
-
-	string company;
-	double price;
-	int amount, acquired;
-
-	if (selection == 1 || selection == 2) {
-		cout << "Security added successfully!" << endl << endl;
-	}
-
-	cout << "Choose your prefered option:" << endl;
-	cout << "1. Add an extra Bond to the existing portfolio" << endl;
-	cout << "2. Add an extra Stock to the existing portfolio" << endl;
-	cout << "3. Add extra stocks and bonds from file to the existing portfolio" << endl;
-	cout << "Any other number for cancellation" << endl << endl;
-	cin >> selection;
-
-	cin.clear();
-	cin.ignore();
-
-	switch (selection) {
-	case 1:
-	case 2:
-		header("Add an extra security to '" + portfolio->getFullName() + "'s portfolio");
-		cout << "Company: ";
-		getline(cin, company);
-		cout << "Security price: ";
-		cin >> price;
-		cout << "Amount of securities: ";
-		cin >> amount;
-		cout << "Year of acquisition: ";
-		cin >> acquired;
-
-		cin.clear();
-		cin.ignore();
-
-		break;
-	case 3:
-		//security from files
-		break;
-	}
-
-	switch (selection) {
-	case 1: {
-		string deadline;
-		int intRate;
-		cout << "Bond deadline: ";
-		getline(cin, deadline);
-		cout << "Interest rate: ";
-		cin >> intRate;
-		portfolio->addSecurity(company, price, amount, acquired, deadline, intRate);
-		break;
-	}
-	case 2: {
-		double startingPrice;
-		cout << "Stock starting price: ";
-		cin >> startingPrice;
-		portfolio->addSecurity(company, price, amount, acquired, startingPrice);
-		break;
-	}
-	}
-} while (selection < 4 && selection > 0);
-
-return portfolio;
 }
 
 Portfolio* createPortfolio() {
@@ -307,6 +238,7 @@ void editMenu(vector<Portfolio*>& portfolios) {
 
 				cout << "Choose your prefered option:" << endl;
 				cout << "1. Edit client information" << endl;
+				cout << "2. Add securities to a portfolio" << endl;
 				cout << "2. Add an extra security" << endl;
 				cout << "Any other number for cancellation" << endl << endl;
 				cin >> choice;
@@ -334,16 +266,16 @@ void editMenu(vector<Portfolio*>& portfolios) {
 				}
 				case 2: {
 					bool rightHeader = 1;
-					addSecurities(portfolios, rightHeader);
-
+					addSecurities(portfolio, rightHeader);
 				}
-				case 2:
-				portfolio->markDeleted();
-				break;
+				case 3:
+					portfolio->markDeleted();
+					break;
+				}
 			}
 		}
-	} 
-} while (choice < 3 && choice > 0);
+	} while (choice < 3 && choice > 0);
+}
 
 void statisticMenu(vector<Portfolio*> &portfolios) {
 	int choice;
