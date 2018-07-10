@@ -243,7 +243,7 @@ void editMenu(vector<Portfolio*>& portfolios) {
 
 		if (choice == 1 || choice == 2) {
 			do {
-				cout << "Select the number of the portfolio you want to edit:" << endl;
+				cout << "Select the number of the portfolio you want to edit or 0 for cancel:" << endl;
 
 				for (int i = 0; i < portfolios.size(); i++) {
 					cout << i + 1 << ". " << portfolios[i]->getFullName() << endl << endl;
@@ -251,54 +251,58 @@ void editMenu(vector<Portfolio*>& portfolios) {
 
 				cout << "Portfolio number: ";
 				cin >> selection;
+				if (selection == 0) break;
 			} while (selection < 1 || selection > portfolios.size());
 
-			portfolio = portfolios[selection - 1];
-
-			switch (choice) {
-			case 1:
-				int choice;
-				header("Edit A Portfolio");
-
-				cout << "Choose your prefered option:" << endl;
-				cout << "1. Edit client information" << endl;
-				cout << "2. Add an extra security to the current portfolio" << endl;
-				cout << "Any other number for cancellation" << endl << endl;
-				cin >> choice;
-				system("cls");
+			if (selection != 0) {
+				portfolio = portfolios[selection - 1];
 
 				switch (choice) {
-				case 1: {
-					int selection, portfoliosToShow;
-					string newName, newAddress, newPhone, newAFM;
-					header("Edit client '" + portfolio->getFullName() + "' information");
+				case 1:
+					int choice;
+					header("Edit A Portfolio");
 
-					cin.clear();
-					cin.ignore();
+					cout << "Choose your prefered option:" << endl;
+					cout << "1. Edit client information" << endl;
+					cout << "2. Add an extra security to the current portfolio" << endl;
+					cout << "Any other number for cancellation" << endl << endl;
+					cin >> choice;
+					system("cls");
 
-					cout << "New customer name: ";
-					getline(cin, newName);
-					portfolio->setFullName(newName);
-					cout << "New address of residence: ";
-					getline(cin, newAddress);
-					portfolio->setAddress(newAddress);
-					cout << "New phone number: ";
-					cin >> newPhone;
-					portfolio->setPhone(newPhone);
-					cout << "New tax registration number: ";
-					cin >> newAFM;
-					portfolio->setAFM(newAFM);
-					break;
-				}
-				case 2: {
-					bool rightHeader = 1;
-					addSecurities(portfolio, rightHeader);
-				}
-				case 3:
-					portfolio->markDeleted();
-					break;
+					switch (choice) {
+					case 1: {
+						int selection, portfoliosToShow;
+						string newName, newAddress, newPhone, newAFM;
+						header("Edit client '" + portfolio->getFullName() + "' information");
+
+						cin.clear();
+						cin.ignore();
+
+						cout << "New customer name: ";
+						getline(cin, newName);
+						portfolio->setFullName(newName);
+						cout << "New address of residence: ";
+						getline(cin, newAddress);
+						portfolio->setAddress(newAddress);
+						cout << "New phone number: ";
+						cin >> newPhone;
+						portfolio->setPhone(newPhone);
+						cout << "New tax registration number: ";
+						cin >> newAFM;
+						portfolio->setAFM(newAFM);
+						break;
+					}
+					case 2: {
+						bool rightHeader = 1;
+						addSecurities(portfolio, rightHeader);
+					}
+					case 3:
+						portfolio->markDeleted();
+						break;
+					}
 				}
 			}
+			
 		}
 	} while (choice < 3 && choice > 0);
 }
