@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <fstream>
 #include <algorithm>
@@ -17,11 +18,22 @@ private:
 	string AFM;
 	vector<Security*> securities;
 	bool valid;
+	struct fileMap {
+		bool isStock;
+		string company;
+		double price;
+		int amount;
+		int acquired;
+		double startingPrice;
+		string deadline;
+		int intRate;
+	};
+	struct fileMap mapToStruct(string line);
 public:
 	Portfolio(string, string, string, string);
 	void addSecurity(string, double, int, int, string, int); //Adds Bond
 	void addSecurity(string, double, int, int, double);		 //Adds Stock
-	void addSecurity(fstream*);								 //Adds Securities from file
+	int addSecurity(fstream&);								 //Adds Securities from file
 	void markDeleted();										 //Marks a portfolio as deleted
 	bool isValid();											 //Gets if this portfolio is marked as deleted
 	double countTotalWorth();								 //Calculates the total price of the portfolio

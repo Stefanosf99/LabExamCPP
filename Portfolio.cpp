@@ -28,8 +28,63 @@ void Portfolio::addSecurity(string company, double price, int amount, int acquir
 }
 
 //Adds all securities from a file
-void Portfolio::addSecurity(fstream* file) {
-	//TODO:: ADD CODE
+int Portfolio::addSecurity(fstream& file) {
+	string sLine;
+	int totalAdded = 0;
+
+	while (file.good()) {
+		getline(file, sLine);
+		struct fileMap cr = mapToStruct(sLine);
+
+		if (cr.isStock) securities.push_back(new Stock(cr.company, cr.price, cr.amount, cr.acquired, cr.startingPrice));
+		else securities.push_back(new Bond(cr.company, cr.price, cr.amount, cr.acquired, cr.deadline, cr.intRate));
+
+		totalAdded++;
+	}
+
+	return totalAdded;
+}
+
+struct Portfolio::fileMap Portfolio::mapToStruct(string line) {
+	stringstream ss(line);
+	string token;
+	int tokenIndex = 0;
+
+	struct fileMap cr;
+
+	while (getline(ss, token, '|')) {
+		switch (tokenIndex++) {
+		case 0:
+			if (token == "M" || token == "Ì") {
+				cr.isStock = true;
+			}
+			else cr.isStock = false;
+			break;
+		case 1:
+			cr.company = token;
+			break;
+		case 2:
+			cr.price = stod(token);
+			break;
+		case 3:
+			cr.amount = stoi(token);
+			break;
+		case 4:
+			cr.acquired = stoi(token);
+			break;
+		case 5:
+			if (cr.isStock) {
+				cr.startingPrice = stod(token);
+			}
+			else cr.deadline = token;
+			break;
+		case 6:
+			cr.intRate = stoi(token);
+			break;
+		}
+	}
+
+	return cr;
 }
 
 // Gets the highest price of a single security

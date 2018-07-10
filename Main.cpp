@@ -19,6 +19,7 @@ void showSingleMoreThanXPrice(vector<Portfolio*>&, double);
 
 Portfolio* addSecurities(Portfolio*, bool);
 Portfolio* createPortfolio();
+void securityFromFileMenu(Portfolio*);
 Portfolio* editMenu(Portfolio*);
 void statisticMenu(vector<Portfolio*>&);
 void menu(vector<Portfolio*>&);
@@ -154,7 +155,7 @@ Portfolio* addSecurities(Portfolio* portfolio, bool editing = false) {
 
 			break;
 		case 3:
-			//security from files
+			securityFromFileMenu(portfolio);
 			break;
 		}
 
@@ -199,6 +200,28 @@ Portfolio* createPortfolio() {
 	getline(cin, AFM);
 
 	return addSecurities(new Portfolio(name, address, phone, AFM));
+}
+
+void securityFromFileMenu(Portfolio* portfolio) {
+	string path;
+	fstream file;
+
+	header("Insert Securities from a text file");
+
+	cout << "Complete file path: ";
+	getline(cin, path);
+
+	file.open(path, ios::in);
+	while (file.fail()) { //Check for file validity
+		cout << "Seems like this file doesn't exist. Please select a valid file." << endl;
+		cout << "Complete file path: ";
+		getline(cin, path);
+		file.open(path, ios::in);
+	}
+
+	system("cls");
+	cout << "Added a total of " << portfolio->addSecurity(file) << " Securities." << endl;
+	system("pause");
 }
 
 void editMenu(vector<Portfolio*>& portfolios) {
