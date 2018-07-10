@@ -25,6 +25,7 @@ void statisticMenu(vector<Portfolio*>&);
 void menu(vector<Portfolio*>&);
 
 int main(int argc, char** argv) {
+	system("chcp 1253");
 	vector<Portfolio*> portfolios;
 	menu(portfolios);
 	return 0;
@@ -245,7 +246,7 @@ void editMenu(vector<Portfolio*>& portfolios) {
 				cout << "Select the number of the portfolio you want to edit:" << endl;
 
 				for (int i = 0; i < portfolios.size(); i++) {
-					cout << i + 1 << ". " << portfolios[i]->getFullName() << endl;
+					cout << i + 1 << ". " << portfolios[i]->getFullName() << endl << endl;
 				}
 
 				cout << "Portfolio number: ";
@@ -261,8 +262,7 @@ void editMenu(vector<Portfolio*>& portfolios) {
 
 				cout << "Choose your prefered option:" << endl;
 				cout << "1. Edit client information" << endl;
-				cout << "2. Add securities to a portfolio" << endl;
-				cout << "2. Add an extra security" << endl;
+				cout << "2. Add an extra security to the current portfolio" << endl;
 				cout << "Any other number for cancellation" << endl << endl;
 				cin >> choice;
 				system("cls");
@@ -272,6 +272,9 @@ void editMenu(vector<Portfolio*>& portfolios) {
 					int selection, portfoliosToShow;
 					string newName, newAddress, newPhone, newAFM;
 					header("Edit client '" + portfolio->getFullName() + "' information");
+
+					cin.clear();
+					cin.ignore();
 
 					cout << "New customer name: ";
 					getline(cin, newName);
