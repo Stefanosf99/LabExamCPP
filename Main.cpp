@@ -334,16 +334,16 @@ void editMenu(vector<Portfolio*>& portfolios) {
 				}
 				case 2: {
 					bool rightHeader = 1;
-					addSecurities(portfolios,bool)
+					addSecurities(portfolios, rightHeader);
 
 				}
-			case 2:
+				case 2:
 				portfolio->markDeleted();
 				break;
 			}
 		}
-	} while (choice < 3 && choice > 0);
-}
+	} 
+} while (choice < 3 && choice > 0);
 
 void statisticMenu(vector<Portfolio*> &portfolios) {
 	int choice;
