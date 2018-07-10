@@ -57,13 +57,12 @@ int getNonDeletedPortfolioCount(vector<Portfolio*>& portfolios) {
 	for (int i = 0; i < portfolios.size(); i++) {
 		if (portfolios[i]->isValid()) sum++;
 	}
-	cout << sum;
 	return sum;
 }
 void customSort(vector<Portfolio*>& portfolios) {
 	sort(portfolios.begin(), portfolios.end(), [](Portfolio* left, Portfolio* right) {
-		if (!right->isValid()) return false;
-		return left->countTotalWorth() < right->countTotalWorth();
+		if (!right->isValid()) return true;
+		return left->countTotalWorth() > right->countTotalWorth();
 	});
 }
 void printTenMostExpensive(vector<Portfolio*>& portfolios) {
@@ -244,15 +243,16 @@ void editMenu(vector<Portfolio*>& portfolios) {
 		if (choice == 1 || choice == 2) {
 			do {
 				cout << "Select the number of the portfolio you want to edit or 0 for cancel:" << endl;
+				customSort(portfolios);
 
-				for (int i = 0; i < portfolios.size(); i++) {
+				for (int i = 0; i < getNonDeletedPortfolioCount(portfolios); i++) {
 					cout << i + 1 << ". " << portfolios[i]->getFullName() << endl << endl;
 				}
 
 				cout << "Portfolio number: ";
 				cin >> selection;
 				if (selection == 0) break;
-			} while (selection < 1 || selection > portfolios.size());
+			} while (selection < 1 || selection > getNonDeletedPortfolioCount(portfolios));
 
 			if (selection != 0) {
 				portfolio = portfolios[selection - 1];
@@ -296,13 +296,12 @@ void editMenu(vector<Portfolio*>& portfolios) {
 						bool rightHeader = 1;
 						addSecurities(portfolio, rightHeader);
 					}
-					case 3:
-						portfolio->markDeleted();
-						break;
 					}
+				case 2:
+					portfolio->markDeleted();
+					break;
 				}
 			}
-			
 		}
 	} while (choice < 3 && choice > 0);
 }
